@@ -1,0 +1,28 @@
+# Pipeline destroy group,plan,service,group
+
+pool:
+  vmImage: ubuntu-latest
+
+steps:
+- task: TerraformInstaller@0
+  inputs:
+    terraformVersion: '1.3.3'
+- task: TerraformTaskV3@3
+  inputs:
+    provider: 'azurerm'
+    command: 'init'
+    backendServiceArm: 'Azure subscription 1 (6c57c00d-ac27-409b-9fc2-dd266529f436)'
+    backendAzureRmResourceGroupName: 'homework_part2'
+    backendAzureRmStorageAccountName: 'alex2611'
+    backendAzureRmContainerName: 'tfstate'
+    backendAzureRmKey: 'tf/terraform.tfstate'
+- task: TerraformTaskV3@3
+  inputs:
+    provider: 'azurerm'
+    command: 'plan'
+    environmentServiceNameAzureRM: 'Azure subscription 1 (6c57c00d-ac27-409b-9fc2-dd266529f436)'
+- task: TerraformTaskV3@3
+  inputs:
+    provider: 'azurerm'
+    command: 'destroy'
+    environmentServiceNameAzureRM: 'Azure subscription 1 (6c57c00d-ac27-409b-9fc2-dd266529f436)'
